@@ -1,0 +1,24 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install FTP client
+        run: sudo apt-get install lftp -y
+
+      - name: Deploy to FTP
+        run: |
+          lftp -c "open -u $FTP_USERNAME,$FTP_PASSWORD ftp://ftpupload.net; mirror -R ./ /htdocs/"
+        env:
+          FTP_USERNAME: 'if0_36080848'
+          FTP_PASSWORD: 'Mishra2711'
